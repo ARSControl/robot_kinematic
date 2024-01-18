@@ -14,39 +14,39 @@ dq3 = dq(4);
 dq4 = dq(5);
 dq5 = dq(6);
 
-J_dot(1,1) = 0.6127*dq0*cos(q0)*cos(q1) - 0.6127*dq1*sin(q0)*sin(q1) + 0.57155*dq0*cos(q0)*cos(q1)*cos(q2) - 0.57155*dq0*cos(q0)*sin(q1)*sin(q2) - 0.57155*dq1*cos(q1)*sin(q0)*sin(q2) - 0.57155*dq1*cos(q2)*sin(q0)*sin(q1) - 0.57155*dq2*cos(q1)*sin(q0)*sin(q2) - 0.57155*dq2*cos(q2)*sin(q0)*sin(q1);
+J_dot(1,1) = (dq0*cos(q0)*(11431.0*cos(q1 + q2) + 12254.0*cos(q1)))/20000 - (sin(q0)*(11431.0*sin(q1 + q2)*(dq1 + dq2) + 12254.0*dq1*sin(q1)))/20000;
 
-J_dot(1,2) = 0.6127*dq1*cos(q0)*cos(q1) - 0.6127*dq0*sin(q0)*sin(q1) + 0.57155*dq1*cos(q0)*cos(q1)*cos(q2) + 0.57155*dq2*cos(q0)*cos(q1)*cos(q2) - 0.57155*dq0*cos(q1)*sin(q0)*sin(q2) - 0.57155*dq0*cos(q2)*sin(q0)*sin(q1) - 0.57155*dq1*cos(q0)*sin(q1)*sin(q2) - 0.57155*dq2*cos(q0)*sin(q1)*sin(q2);
+J_dot(1,2) = (cos(q0)*(11431.0*cos(q1 + q2)*(dq1 + dq2) + 12254.0*dq1*cos(q1)))/20000 - (dq0*sin(q0)*(11431.0*sin(q1 + q2) + 12254.0*sin(q1)))/20000;
 
-J_dot(1,3) = 0.57155*dq1*cos(q0)*cos(q1)*cos(q2) + 0.57155*dq2*cos(q0)*cos(q1)*cos(q2) - 0.57155*dq0*cos(q1)*sin(q0)*sin(q2) - 0.57155*dq0*cos(q2)*sin(q0)*sin(q1) - 0.57155*dq1*cos(q0)*sin(q1)*sin(q2) - 0.57155*dq2*cos(q0)*sin(q1)*sin(q2);
+J_dot(1,3) = 0.57155*cos(q1 + q2)*cos(q0)*(dq1 + dq2) - 0.57155*dq0*sin(q1 + q2)*sin(q0);
 
-J_dot(2,1) = 0.6127*dq0*cos(q1)*sin(q0) + 0.6127*dq1*cos(q0)*sin(q1) + 0.57155*dq0*cos(q1)*cos(q2)*sin(q0) + 0.57155*dq1*cos(q0)*cos(q1)*sin(q2) + 0.57155*dq1*cos(q0)*cos(q2)*sin(q1) + 0.57155*dq2*cos(q0)*cos(q1)*sin(q2) + 0.57155*dq2*cos(q0)*cos(q2)*sin(q1) - 0.57155*dq0*sin(q0)*sin(q1)*sin(q2);
+J_dot(2,1) = (cos(q0)*(11431.0*sin(q1 + q2)*(dq1 + dq2) + 12254.0*dq1*sin(q1)))/20000 + (dq0*sin(q0)*(11431.0*cos(q1 + q2) + 12254.0*cos(q1)))/20000;
 
-J_dot(2,2) = 0.6127*dq0*cos(q0)*sin(q1) + 0.6127*dq1*cos(q1)*sin(q0) + 0.57155*dq0*cos(q0)*cos(q1)*sin(q2) + 0.57155*dq0*cos(q0)*cos(q2)*sin(q1) + 0.57155*dq1*cos(q1)*cos(q2)*sin(q0) + 0.57155*dq2*cos(q1)*cos(q2)*sin(q0) - 0.57155*dq1*sin(q0)*sin(q1)*sin(q2) - 0.57155*dq2*sin(q0)*sin(q1)*sin(q2);
+J_dot(2,2) = (sin(q0)*(11431.0*cos(q1 + q2)*(dq1 + dq2) + 12254.0*dq1*cos(q1)))/20000 + (dq0*cos(q0)*(11431.0*sin(q1 + q2) + 12254.0*sin(q1)))/20000;
 
-J_dot(2,3) = 0.57155*dq0*cos(q0)*cos(q1)*sin(q2) + 0.57155*dq0*cos(q0)*cos(q2)*sin(q1) + 0.57155*dq1*cos(q1)*cos(q2)*sin(q0) + 0.57155*dq2*cos(q1)*cos(q2)*sin(q0) - 0.57155*dq1*sin(q0)*sin(q1)*sin(q2) - 0.57155*dq2*sin(q0)*sin(q1)*sin(q2);
+J_dot(2,3) = 0.57155*cos(q1 + q2)*sin(q0)*(dq1 + dq2) + 0.57155*dq0*sin(q1 + q2)*cos(q0);
 
 J_dot(3,1) = 0;
 
-J_dot(3,2) = 0.6127*dq1*sin(q1) + 0.57155*dq1*cos(q1)*sin(q2) + 0.57155*dq1*cos(q2)*sin(q1) + 0.57155*dq2*cos(q1)*sin(q2) + 0.57155*dq2*cos(q2)*sin(q1);
+J_dot(3,2) = 0.57155*sin(q1 + q2)*(dq1 + dq2) + 0.6127*dq1*sin(q1);
 
-J_dot(3,3) = 0.57155*dq1*cos(q1)*sin(q2) + 0.57155*dq1*cos(q2)*sin(q1) + 0.57155*dq2*cos(q1)*sin(q2) + 0.57155*dq2*cos(q2)*sin(q1);
+J_dot(3,3) = 0.57155*sin(q1 + q2)*(dq1 + dq2);
 
 J_dot(4,1) = 0;
 
-J_dot(4,2) = (1.0*sin(q0)*sin(q1)*sin(q2) - cos(q1)*cos(q2)*sin(q0))*(1.0*dq1*cos(q1)*sin(q2) + 1.0*dq1*cos(q2)*sin(q1) + 1.0*dq2*cos(q1)*sin(q2) + 1.0*dq2*cos(q2)*sin(q1)) + (1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1))*(1.0*dq0*cos(q0)*cos(q1)*sin(q2) + 1.0*dq0*cos(q0)*cos(q2)*sin(q1) + 1.0*dq1*cos(q1)*cos(q2)*sin(q0) + 1.0*dq2*cos(q1)*cos(q2)*sin(q0) - 1.0*dq1*sin(q0)*sin(q1)*sin(q2) - 1.0*dq2*sin(q0)*sin(q1)*sin(q2)) + (1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))*(1.0*dq1*cos(q1)*cos(q2) + 1.0*dq2*cos(q1)*cos(q2) - 1.0*dq1*sin(q1)*sin(q2) - 1.0*dq2*sin(q1)*sin(q2)) - (1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))*(1.0*dq0*cos(q0)*sin(q1)*sin(q2) - dq0*cos(q0)*cos(q1)*cos(q2) + 1.0*dq1*cos(q1)*sin(q0)*sin(q2) + dq1*cos(q2)*sin(q0)*sin(q1) + dq2*cos(q1)*sin(q0)*sin(q2) + 1.0*dq2*cos(q2)*sin(q0)*sin(q1));
+J_dot(4,2) = dq0*cos(q0);
 
-J_dot(4,3) = (1.0*sin(q0)*sin(q1)*sin(q2) - cos(q1)*cos(q2)*sin(q0))*(1.0*dq1*cos(q1)*sin(q2) + 1.0*dq1*cos(q2)*sin(q1) + 1.0*dq2*cos(q1)*sin(q2) + 1.0*dq2*cos(q2)*sin(q1)) + (1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1))*(1.0*dq0*cos(q0)*cos(q1)*sin(q2) + 1.0*dq0*cos(q0)*cos(q2)*sin(q1) + 1.0*dq1*cos(q1)*cos(q2)*sin(q0) + 1.0*dq2*cos(q1)*cos(q2)*sin(q0) - 1.0*dq1*sin(q0)*sin(q1)*sin(q2) - 1.0*dq2*sin(q0)*sin(q1)*sin(q2)) + (1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))*(1.0*dq1*cos(q1)*cos(q2) + 1.0*dq2*cos(q1)*cos(q2) - 1.0*dq1*sin(q1)*sin(q2) - 1.0*dq2*sin(q1)*sin(q2)) - (1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))*(1.0*dq0*cos(q0)*sin(q1)*sin(q2) - dq0*cos(q0)*cos(q1)*cos(q2) + 1.0*dq1*cos(q1)*sin(q0)*sin(q2) + dq1*cos(q2)*sin(q0)*sin(q1) + dq2*cos(q1)*sin(q0)*sin(q2) + 1.0*dq2*cos(q2)*sin(q0)*sin(q1));
+J_dot(4,3) = dq0*cos(q0);
 
-J_dot(5,1) = (1.0*sin(q0)*sin(q1)*sin(q2) - cos(q1)*cos(q2)*sin(q0))*(1.0*dq1*cos(q1)*cos(q2) + 1.0*dq2*cos(q1)*cos(q2) - 1.0*dq1*sin(q1)*sin(q2) - 1.0*dq2*sin(q1)*sin(q2)) + (1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))*(1.0*dq0*cos(q0)*cos(q1)*sin(q2) + 1.0*dq0*cos(q0)*cos(q2)*sin(q1) + 1.0*dq1*cos(q1)*cos(q2)*sin(q0) + 1.0*dq2*cos(q1)*cos(q2)*sin(q0) - 1.0*dq1*sin(q0)*sin(q1)*sin(q2) - 1.0*dq2*sin(q0)*sin(q1)*sin(q2)) - (1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))*(1.0*dq1*cos(q1)*sin(q2) + 1.0*dq1*cos(q2)*sin(q1) + 1.0*dq2*cos(q1)*sin(q2) + 1.0*dq2*cos(q2)*sin(q1)) + (1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1))*(1.0*dq0*cos(q0)*sin(q1)*sin(q2) - dq0*cos(q0)*cos(q1)*cos(q2) + 1.0*dq1*cos(q1)*sin(q0)*sin(q2) + dq1*cos(q2)*sin(q0)*sin(q1) + dq2*cos(q1)*sin(q0)*sin(q2) + 1.0*dq2*cos(q2)*sin(q0)*sin(q1));
+J_dot(5,1) = 0;
 
-J_dot(5,2) = (1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))*(1.0*dq0*cos(q1)*cos(q2)*sin(q0) + 1.0*dq1*cos(q0)*cos(q1)*sin(q2) + 1.0*dq1*cos(q0)*cos(q2)*sin(q1) + 1.0*dq2*cos(q0)*cos(q1)*sin(q2) + 1.0*dq2*cos(q0)*cos(q2)*sin(q1) - 1.0*dq0*sin(q0)*sin(q1)*sin(q2)) - (1.0*cos(q0)*cos(q1)*sin(q2) + cos(q0)*cos(q2)*sin(q1))*(1.0*dq1*cos(q1)*cos(q2) + 1.0*dq2*cos(q1)*cos(q2) - 1.0*dq1*sin(q1)*sin(q2) - 1.0*dq2*sin(q1)*sin(q2)) + (1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2))*(1.0*dq1*cos(q1)*sin(q2) + 1.0*dq1*cos(q2)*sin(q1) + 1.0*dq2*cos(q1)*sin(q2) + 1.0*dq2*cos(q2)*sin(q1)) + (1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1))*(1.0*dq0*cos(q1)*sin(q0)*sin(q2) - 1.0*dq2*cos(q0)*cos(q1)*cos(q2) - dq1*cos(q0)*cos(q1)*cos(q2) + dq0*cos(q2)*sin(q0)*sin(q1) + 1.0*dq1*cos(q0)*sin(q1)*sin(q2) + dq2*cos(q0)*sin(q1)*sin(q2));
+J_dot(5,2) = dq0*sin(q0);
 
-J_dot(5,3) = (1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))*(1.0*dq0*cos(q1)*cos(q2)*sin(q0) + 1.0*dq1*cos(q0)*cos(q1)*sin(q2) + 1.0*dq1*cos(q0)*cos(q2)*sin(q1) + 1.0*dq2*cos(q0)*cos(q1)*sin(q2) + 1.0*dq2*cos(q0)*cos(q2)*sin(q1) - 1.0*dq0*sin(q0)*sin(q1)*sin(q2)) - (cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))*(1.0*dq1*cos(q1)*cos(q2) + 1.0*dq2*cos(q1)*cos(q2) - 1.0*dq1*sin(q1)*sin(q2) - 1.0*dq2*sin(q1)*sin(q2)) + (1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2))*(1.0*dq1*cos(q1)*sin(q2) + 1.0*dq1*cos(q2)*sin(q1) + 1.0*dq2*cos(q1)*sin(q2) + 1.0*dq2*cos(q2)*sin(q1)) + (1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1))*(dq0*cos(q1)*sin(q0)*sin(q2) - dq2*cos(q0)*cos(q1)*cos(q2) - 1.0*dq1*cos(q0)*cos(q1)*cos(q2) + 1.0*dq0*cos(q2)*sin(q0)*sin(q1) + dq1*cos(q0)*sin(q1)*sin(q2) + 1.0*dq2*cos(q0)*sin(q1)*sin(q2));
+J_dot(5,3) = dq0*sin(q0);
 
-J_dot(6,1) = 2.0*dq0*cos(q0)*sin(q0) - 2*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))*(1.0*dq0*cos(q1)*sin(q0)*sin(q2) - 1.0*dq2*cos(q0)*cos(q1)*cos(q2) - 1.0*dq1*cos(q0)*cos(q1)*cos(q2) + 1.0*dq0*cos(q2)*sin(q0)*sin(q1) + 1.0*dq1*cos(q0)*sin(q1)*sin(q2) + 1.0*dq2*cos(q0)*sin(q1)*sin(q2)) - 2*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2))*(dq0*cos(q1)*cos(q2)*sin(q0) + 1.0*dq1*cos(q0)*cos(q1)*sin(q2) + dq1*cos(q0)*cos(q2)*sin(q1) + dq2*cos(q0)*cos(q1)*sin(q2) + 1.0*dq2*cos(q0)*cos(q2)*sin(q1) - 1.0*dq0*sin(q0)*sin(q1)*sin(q2));
+J_dot(6,1) = 0;
 
-J_dot(6,2) = (1.0*cos(q1)*sin(q0)*sin(q2) + cos(q2)*sin(q0)*sin(q1))*(dq0*cos(q1)*cos(q2)*sin(q0) + 1.0*dq1*cos(q0)*cos(q1)*sin(q2) + dq1*cos(q0)*cos(q2)*sin(q1) + dq2*cos(q0)*cos(q1)*sin(q2) + 1.0*dq2*cos(q0)*cos(q2)*sin(q1) - 1.0*dq0*sin(q0)*sin(q1)*sin(q2)) - (cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2))*(1.0*dq0*cos(q0)*cos(q1)*sin(q2) + dq0*cos(q0)*cos(q2)*sin(q1) + dq1*cos(q1)*cos(q2)*sin(q0) + 1.0*dq2*cos(q1)*cos(q2)*sin(q0) - 1.0*dq1*sin(q0)*sin(q1)*sin(q2) - dq2*sin(q0)*sin(q1)*sin(q2)) - (1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))*(1.0*dq0*cos(q0)*sin(q1)*sin(q2) - 1.0*dq0*cos(q0)*cos(q1)*cos(q2) + 1.0*dq1*cos(q1)*sin(q0)*sin(q2) + 1.0*dq1*cos(q2)*sin(q0)*sin(q1) + 1.0*dq2*cos(q1)*sin(q0)*sin(q2) + 1.0*dq2*cos(q2)*sin(q0)*sin(q1)) + (1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0))*(1.0*dq0*cos(q1)*sin(q0)*sin(q2) - 1.0*dq2*cos(q0)*cos(q1)*cos(q2) - 1.0*dq1*cos(q0)*cos(q1)*cos(q2) + 1.0*dq0*cos(q2)*sin(q0)*sin(q1) + 1.0*dq1*cos(q0)*sin(q1)*sin(q2) + 1.0*dq2*cos(q0)*sin(q1)*sin(q2));
+J_dot(6,2) = 0;
 
-J_dot(6,3) = (cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))*(dq0*cos(q1)*cos(q2)*sin(q0) + 1.0*dq1*cos(q0)*cos(q1)*sin(q2) + dq1*cos(q0)*cos(q2)*sin(q1) + dq2*cos(q0)*cos(q1)*sin(q2) + 1.0*dq2*cos(q0)*cos(q2)*sin(q1) - 1.0*dq0*sin(q0)*sin(q1)*sin(q2)) - (cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2))*(dq0*cos(q0)*cos(q1)*sin(q2) + 1.0*dq0*cos(q0)*cos(q2)*sin(q1) + 1.0*dq1*cos(q1)*cos(q2)*sin(q0) + dq2*cos(q1)*cos(q2)*sin(q0) - dq1*sin(q0)*sin(q1)*sin(q2) - 1.0*dq2*sin(q0)*sin(q1)*sin(q2)) - (1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))*(1.0*dq0*cos(q0)*sin(q1)*sin(q2) - 1.0*dq0*cos(q0)*cos(q1)*cos(q2) + 1.0*dq1*cos(q1)*sin(q0)*sin(q2) + 1.0*dq1*cos(q2)*sin(q0)*sin(q1) + 1.0*dq2*cos(q1)*sin(q0)*sin(q2) + 1.0*dq2*cos(q2)*sin(q0)*sin(q1)) + (1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0))*(1.0*dq0*cos(q1)*sin(q0)*sin(q2) - 1.0*dq2*cos(q0)*cos(q1)*cos(q2) - 1.0*dq1*cos(q0)*cos(q1)*cos(q2) + 1.0*dq0*cos(q2)*sin(q0)*sin(q1) + 1.0*dq1*cos(q0)*sin(q1)*sin(q2) + 1.0*dq2*cos(q0)*sin(q1)*sin(q2));
+J_dot(6,3) = 0;
 

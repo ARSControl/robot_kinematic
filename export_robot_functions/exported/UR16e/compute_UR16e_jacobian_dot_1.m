@@ -28,13 +28,13 @@ J_dot(3,2) = 0.4784*dq1*sin(q1);
 
 J_dot(4,1) = 0;
 
-J_dot(4,2) = 1.0*dq0*cos(q0)*cos(q1)^2 + 1.0*dq0*cos(q0)*sin(q1)^2;
+J_dot(4,2) = dq0*cos(q0);
 
 J_dot(5,1) = 0;
 
-J_dot(5,2) = 1.0*dq0*cos(q1)^2*sin(q0) + 1.0*dq0*sin(q0)*sin(q1)^2;
+J_dot(5,2) = dq0*sin(q0);
 
-J_dot(6,1) = 2.0*dq0*cos(q0)*sin(q0) - 2*dq0*cos(q0)*cos(q1)^2*sin(q0) - 2.0*dq0*cos(q0)*sin(q0)*sin(q1)^2;
+J_dot(6,1) = 0;
 
 J_dot(6,2) = 0;
 

@@ -11,29 +11,29 @@ double q3 = q(3,0);
 double q4 = q(4,0);
 double q5 = q(5,0);
 
-T(0,0) = cos(q0)*cos(q1)*cos(q2)-cos(q0)*sin(q1)*sin(q2)*1.0;
+T(0,0) = cos(q1+q2)*cos(q0);
 
-T(0,1) = cos(q0)*cos(q1)*sin(q2)*-1.0-cos(q0)*cos(q2)*sin(q1)*1.0;
+T(0,1) = -sin(q1+q2)*cos(q0);
 
 T(0,2) = sin(q0);
 
-T(0,3) = cos(q0)*cos(q1)*-2.4355E-1-cos(q0)*cos(q1)*cos(q2)*2.132E-1+cos(q0)*sin(q1)*sin(q2)*2.132E-1;
+T(0,3) = cos(q0)*(cos(q1+q2)*4.264E+3+cos(q1)*4.871E+3)*(-5.0E-5);
 
-T(1,0) = sin(q0)*sin(q1)*sin(q2)*-1.0+cos(q1)*cos(q2)*sin(q0);
+T(1,0) = cos(q1+q2)*sin(q0);
 
-T(1,1) = cos(q1)*sin(q0)*sin(q2)*-1.0-cos(q2)*sin(q0)*sin(q1)*1.0;
+T(1,1) = -sin(q1+q2)*sin(q0);
 
 T(1,2) = cos(q0)*-1.0;
 
-T(1,3) = cos(q1)*sin(q0)*-2.4355E-1+sin(q0)*sin(q1)*sin(q2)*2.132E-1-cos(q1)*cos(q2)*sin(q0)*2.132E-1;
+T(1,3) = sin(q0)*(cos(q1+q2)*4.264E+3+cos(q1)*4.871E+3)*(-5.0E-5);
 
-T(2,0) = cos(q1)*sin(q2)*1.0+cos(q2)*sin(q1)*1.0;
+T(2,0) = sin(q1+q2);
 
-T(2,1) = cos(q1)*cos(q2)*1.0-sin(q1)*sin(q2)*1.0;
+T(2,1) = cos(q1+q2);
 
 T(2,2) = 0.0;
 
-T(2,3) = sin(q1)*-2.4355E-1-cos(q1)*sin(q2)*2.132E-1-cos(q2)*sin(q1)*2.132E-1+1.5185E-1;
+T(2,3) = sin(q1+q2)*-2.132E-1-sin(q1)*2.4355E-1+1.5185E-1;
 
 T(3,0) = 0.0;
 

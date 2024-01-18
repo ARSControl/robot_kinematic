@@ -35,13 +35,13 @@ J_dot(2,1) = dq1*sin(q1)*2.4365E-1;
 
 J_dot(3,0) = 0.0;
 
-J_dot(3,1) = dq0*cos(q0)*pow(cos(q1),2.0)*1.0+dq0*cos(q0)*pow(sin(q1),2.0)*1.0;
+J_dot(3,1) = dq0*cos(q0);
 
 J_dot(4,0) = 0.0;
 
-J_dot(4,1) = dq0*pow(cos(q1),2.0)*sin(q0)*1.0+dq0*sin(q0)*pow(sin(q1),2.0)*1.0;
+J_dot(4,1) = dq0*sin(q0);
 
-J_dot(5,0) = dq0*cos(q0)*sin(q0)*2.0-dq0*cos(q0)*pow(cos(q1),2.0)*sin(q0)*2.0-dq0*cos(q0)*sin(q0)*pow(sin(q1),2.0)*2.0;
+J_dot(5,0) = 0.0;
 
 J_dot(5,1) = 0.0;
 

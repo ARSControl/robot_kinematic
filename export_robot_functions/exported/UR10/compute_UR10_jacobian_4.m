@@ -7,63 +7,63 @@ q3 = q(4);
 q4 = q(5);
 q5 = q(6);
 
-J(1,1) = 0.163941*cos(q0) - 0.1157*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) + 0.612*cos(q1)*sin(q0) + 0.1157*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - cos(q1)*cos(q2)*sin(q0)) - 0.5723*sin(q0)*sin(q1)*sin(q2) + 0.5723*cos(q1)*cos(q2)*sin(q0);
+J(1,1) = 0.163941*cos(q0) - 0.1157*sin(q1 + q2 + q3)*sin(q0) + 0.0001*sin(q0)*(5723.0*cos(q1 + q2) + 6120.0*cos(q1));
 
-J(1,2) = 0.612*cos(q0)*sin(q1) - 0.1157*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + cos(q0)*cos(q2)*sin(q1)) + 0.1157*cos(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) + 0.5723*cos(q0)*cos(q1)*sin(q2) + 0.5723*cos(q0)*cos(q2)*sin(q1);
+J(1,2) = 0.1157*cos(q1 + q2 + q3)*cos(q0) + 0.0001*cos(q0)*(5723.0*sin(q1 + q2) + 6120.0*sin(q1));
 
-J(1,3) = 0.1157*cos(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 0.1157*sin(q3)*(cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)) + 0.5723*cos(q0)*cos(q1)*sin(q2) + 0.5723*cos(q0)*cos(q2)*sin(q1);
+J(1,3) = (cos(q0)*(1157.0*cos(q1 + q2 + q3) + 5723.0*sin(q1 + q2)))/10000;
 
-J(1,4) = 0.1157*cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 0.1157*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1));
+J(1,4) = 0.1157*cos(q1 + q2 + q3)*cos(q0);
 
 J(1,5) = 0;
 
-J(2,1) = 0.163941*sin(q0) - 0.612*cos(q0)*cos(q1) + 0.1157*cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)) + 0.1157*sin(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 0.5723*cos(q0)*cos(q1)*cos(q2) + 0.5723*cos(q0)*sin(q1)*sin(q2);
+J(2,1) = 0.163941*sin(q0) + 0.1157*sin(q1 + q2 + q3)*cos(q0) - 0.0001*cos(q0)*(5723.0*cos(q1 + q2) + 6120.0*cos(q1));
 
-J(2,2) = 0.612*sin(q0)*sin(q1) - 0.1157*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 0.1157*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 0.5723*cos(q1)*sin(q0)*sin(q2) + 0.5723*cos(q2)*sin(q0)*sin(q1);
+J(2,2) = 0.1157*cos(q1 + q2 + q3)*sin(q0) + 0.0001*sin(q0)*(5723.0*sin(q1 + q2) + 6120.0*sin(q1));
 
-J(2,3) = 0.5723*cos(q1)*sin(q0)*sin(q2) - 0.1157*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 0.1157*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 0.5723*cos(q2)*sin(q0)*sin(q1);
+J(2,3) = (sin(q0)*(1157.0*cos(q1 + q2 + q3) + 5723.0*sin(q1 + q2)))/10000;
 
-J(2,4) = - 0.1157*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) - 0.1157*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1));
+J(2,4) = 0.1157*cos(q1 + q2 + q3)*sin(q0);
 
 J(2,5) = 0;
 
 J(3,1) = 0;
 
-J(3,2) = 0.5723*sin(q1)*sin(q2) - 0.5723*cos(q1)*cos(q2) - 0.612*cos(q1) + 0.1157*cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + 0.1157*sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2));
+J(3,2) = 0.1157*sin(q1 + q2 + q3) - 0.5723*cos(q1 + q2) - 0.612*cos(q1);
 
-J(3,3) = 0.5723*sin(q1)*sin(q2) - 0.5723*cos(q1)*cos(q2) + 0.1157*cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + 0.1157*sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2));
+J(3,3) = 0.1157*sin(q1 + q2 + q3) - 0.5723*cos(q1 + q2);
 
-J(3,4) = 0.1157*cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + 0.1157*sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2));
+J(3,4) = 0.1157*sin(q1 + q2 + q3);
 
 J(3,5) = 0;
 
 J(4,1) = 0;
 
-J(4,2) = (1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)))*(1.0*cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + 1.0*sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))) + 1.0*sin(q4)*(1.0*cos(q0)*cos(q4) - sin(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1))) - cos(q4)*(1.0*cos(q0)*sin(q4) + 1.0*cos(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)));
+J(4,2) = sin(q0);
 
-J(4,3) = (1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)))*(1.0*cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + 1.0*sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))) + 1.0*sin(q4)*(1.0*cos(q0)*cos(q4) - sin(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1))) - cos(q4)*(1.0*cos(q0)*sin(q4) + 1.0*cos(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)));
+J(4,3) = sin(q0);
 
-J(4,4) = (1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)))*(1.0*cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + 1.0*sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))) + 1.0*sin(q4)*(1.0*cos(q0)*cos(q4) - sin(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1))) - cos(q4)*(1.0*cos(q0)*sin(q4) + 1.0*cos(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)));
+J(4,4) = sin(q0);
 
-J(4,5) = 1.0*cos(q4)*(1.0*cos(q0)*cos(q4) - sin(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))) + sin(q4)*(1.0*cos(q0)*sin(q4) + 1.0*cos(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)));
+J(4,5) = sin(q1 + q2 + q3)*cos(q0);
 
-J(5,1) = (1.0*cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)))*(1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - cos(q1)*cos(q2)*sin(q0))) + cos(q4)*(cos(q0)*sin(q4) + cos(q4)*(1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) + cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - cos(q1)*cos(q2)*sin(q0))))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))) - 1.0*sin(q4)*(cos(q0)*cos(q4) - 1.0*sin(q4)*(1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) + cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - cos(q1)*cos(q2)*sin(q0))))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)));
+J(5,1) = 0;
 
-J(5,2) = (1.0*cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)))*(1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + cos(q0)*cos(q2)*sin(q1)) - 1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2))) - cos(q4)^2*(cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + cos(q0)*cos(q2)*sin(q1)) + 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))) - 1.0*sin(q4)^2*(cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + cos(q0)*cos(q2)*sin(q1)) + 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)));
+J(5,2) = -1.0*cos(q0);
 
-J(5,3) = (1.0*cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)))*(1.0*sin(q3)*(cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)) - 1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2))) - cos(q4)^2*(cos(q3)*(cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)) + 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))) - 1.0*sin(q4)^2*(cos(q3)*(cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)) + 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)));
+J(5,3) = -1.0*cos(q0);
 
-J(5,4) = - (1.0*cos(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)))*(1.0*cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))) - cos(q4)^2*(sin(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) + 1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))) - 1.0*sin(q4)^2*(sin(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) + 1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)));
+J(5,4) = -1.0*cos(q0);
 
-J(5,5) = cos(q4)*(cos(q4)*sin(q0) - sin(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2))) + 1.0*sin(q4)*(sin(q0)*sin(q4) + 1.0*cos(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))))*(cos(q3)*(1.0*cos(q1)*sin(q2) + 1.0*cos(q2)*sin(q1)) + sin(q3)*(1.0*cos(q1)*cos(q2) - 1.0*sin(q1)*sin(q2)));
+J(5,5) = sin(q1 + q2 + q3)*sin(q0);
 
-J(6,1) = (sin(q0)*sin(q4) + cos(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))))*(1.0*sin(q0)*sin(q4) + 1.0*cos(q4)*(1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)))) - (cos(q4)*sin(q0) - 1.0*sin(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))))*(sin(q4)*(1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))) - 1.0*cos(q4)*sin(q0)) + (1.0*sin(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) + 1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)))*(1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)) + 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)));
+J(6,1) = 1.0;
 
-J(6,2) = sin(q4)*(1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)))*(cos(q4)*sin(q0) - 1.0*sin(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)))) - 1.0*cos(q4)*(sin(q0)*sin(q4) + cos(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))))*(1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0))) - (1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)))*(1.0*sin(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) + 1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)));
+J(6,2) = 0;
 
-J(6,3) = sin(q4)*(1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)))*(cos(q4)*sin(q0) - 1.0*sin(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)))) - 1.0*cos(q4)*(sin(q0)*sin(q4) + cos(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))))*(1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0))) - (1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)))*(1.0*sin(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) + 1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)));
+J(6,3) = 0;
 
-J(6,4) = sin(q4)*(1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)))*(cos(q4)*sin(q0) - 1.0*sin(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)))) - 1.0*cos(q4)*(sin(q0)*sin(q4) + cos(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))))*(1.0*cos(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)) - 1.0*sin(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0))) - (1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)))*(1.0*sin(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) + 1.0*cos(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1)));
+J(6,4) = 0;
 
-J(6,5) = (cos(q4)*sin(q0) - 1.0*sin(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))))*(1.0*cos(q0)*sin(q4) + cos(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1)))) - (sin(q0)*sin(q4) + cos(q4)*(cos(q3)*(cos(q0)*cos(q1)*cos(q2) - 1.0*cos(q0)*sin(q1)*sin(q2)) - 1.0*sin(q3)*(1.0*cos(q0)*cos(q1)*sin(q2) + 1.0*cos(q0)*cos(q2)*sin(q1))))*(1.0*cos(q0)*cos(q4) - 1.0*sin(q4)*(1.0*cos(q3)*(1.0*sin(q0)*sin(q1)*sin(q2) - 1.0*cos(q1)*cos(q2)*sin(q0)) + 1.0*sin(q3)*(1.0*cos(q1)*sin(q0)*sin(q2) + 1.0*cos(q2)*sin(q0)*sin(q1))));
+J(6,5) = -cos(q1 + q2 + q3);
 
