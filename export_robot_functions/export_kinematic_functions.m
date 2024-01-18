@@ -9,13 +9,15 @@ function export_kinematic_functions(model)
 
     for i = 1:model.n_dofs
         T{i} = model.frames_wrt_base{i};
-        [J_t, J_dot_dq_t] = get_jacobians_from_direct_kinematics(T{i}, i);
+        [J_t, J_dot_t, J_dot_dq_t] = get_jacobians_from_direct_kinematics(T{i}, i);
         J{i} = J_t;
+        J_dot{i} = J_dot_t;
         J_dot_dq{i} = J_dot_dq_t;
     end
    
     direct_kinematic_function_name = strcat('compute_',model.name,'_direct_kinematic');
     jacobian_function_name = strcat('compute_',model.name,'_jacobian');
+    jacobian_dot_function_name = strcat('compute_',model.name,'_jacobian_dot');
     jacobian_dot_dq_function_name = strcat('compute_',model.name,'_jacobian_dot_dq');
     
 %% matlab direct kinematic   
@@ -73,8 +75,41 @@ function export_kinematic_functions(model)
     
         fclose(fid);
     end
+
+    %% matlab jacobian dot
+
+    for k = 1:model.n_dofs
+            if(k~=model.n_dofs)
+                kth_jacobian_dot_function_name = strcat(jacobian_dot_function_name,'_', num2str(k-1));
+            else
+                kth_jacobian_dot_function_name = jacobian_dot_function_name;
+            end
     
-%% matlab jacobian dot 
+            fid = fopen(strcat(base_path, kth_jacobian_dot_function_name,'.m'), "wt");
+            fprintf(fid, "%s\n\n", strcat("function J_dot = ", kth_jacobian_dot_function_name,"(q, dq)"));
+        
+            for i=1:model.n_dofs
+                fprintf(fid, "%s\n", strcat("q",int2str(i-1)," = q(", int2str(i),");"));
+            end
+            fprintf(fid, "\n");
+
+            for i=1:model.n_dofs
+                fprintf(fid, "%s\n", strcat("dq",int2str(i-1)," = dq(", int2str(i),");"));
+            end
+            fprintf(fid, "\n");
+            
+            kth_J_dot= J_dot{k};
+            for i = 1:size(kth_J_dot,1)
+                for j=1:size(kth_J_dot,2)
+                    data_str = strcat("J_dot(",num2str(i),",",num2str(j),") = ");
+                    fprintf(fid, "%s\n\n", strcat(data_str, char(kth_J_dot(i,j)),";"));
+                end
+            end
+        
+            fclose(fid);
+    end
+
+%% matlab jacobian dot * dq
 
     for k = 1:model.n_dofs
             if(k~=model.n_dofs)
@@ -116,7 +151,8 @@ function export_kinematic_functions(model)
             kth_direct_kinematic_function_name = direct_kinematic_function_name;
         end
   
-        fid = fopen(strcat(base_path, strcat(kth_direct_kinematic_function_name,'.h')), "wt");
+        fid = fopen(strcat(base_path, strcat(kth_direct_kinematic_function_name,'.cpp')), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
         fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 4, 4> ", kth_direct_kinematic_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q){"));
         fprintf(fid, "%s\n\n", "Eigen::Matrix<double, 4, 4> T;");
     
@@ -134,7 +170,7 @@ function export_kinematic_functions(model)
         end
         
         fprintf(fid, "%s\n\n", "return T;");
-        fprintf(fid, "%s\n\n", "}");
+        fprintf(fid, "%s\n", "}");
     
         fclose(fid);
     
@@ -149,7 +185,8 @@ function export_kinematic_functions(model)
             kth_jacobian_function_name = jacobian_function_name;
         end
 
-        fid = fopen(strcat(base_path, kth_jacobian_function_name,'.h'), "wt");
+        fid = fopen(strcat(base_path, kth_jacobian_function_name,'.cpp'), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
         fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, ", num2str(model.n_dofs),"> ", kth_jacobian_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q){"));
         fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, ", num2str(model.n_dofs),"> J;"));
         fprintf(fid, "%s\n\n", strcat("J.setZero();"));
@@ -168,12 +205,51 @@ function export_kinematic_functions(model)
         end
         
         fprintf(fid, "%s\n\n", "return J;");
-        fprintf(fid, "%s\n\n", "}");
+        fprintf(fid, "%s\n", "}");
 
     fclose(fid);
     end
-   
+
 %% cpp jacobian dot
+
+    for k = 1:model.n_dofs
+        if(k~=model.n_dofs)
+            kth_jacobian_dot_function_name = strcat(jacobian_dot_function_name,'_', num2str(k-1));
+        else
+            kth_jacobian_dot_function_name = jacobian_dot_function_name;
+        end
+
+        fid = fopen(strcat(base_path, kth_jacobian_dot_function_name,'.cpp'), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 6> ", kth_jacobian_dot_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q, Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> dq){"));
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 6> J_dot;"));
+        fprintf(fid, "%s\n\n", strcat("J_dot.setZero();"));
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double q",int2str(i-1)," = q(", int2str(i-1),",0);"));
+        end
+        fprintf(fid, "\n");
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double dq",int2str(i-1)," = dq(", int2str(i-1),",0);"));
+        end
+        fprintf(fid, "\n");
+        
+        kth_J_dot = J_dot{k};
+        for i = 1:size(kth_J_dot,1)
+            for j=1:size(kth_J_dot,2)
+                data_str = strcat("J_dot(",num2str(i-1),",",num2str(j-1),") = ");
+                fprintf(fid, "%s\n\n", strcat(data_str, to_c(kth_J_dot(i,j))));
+            end
+        end
+        
+        fprintf(fid, "%s\n\n", "return J_dot;");
+        fprintf(fid, "%s\n", "}");
+
+    fclose(fid);
+    end
+
+%% cpp jacobian dot * dq
 
     for k = 1:model.n_dofs
         if(k~=model.n_dofs)
@@ -182,7 +258,8 @@ function export_kinematic_functions(model)
             kth_jacobian_dot_dq_function_name = jacobian_dot_dq_function_name;
         end
 
-        fid = fopen(strcat(base_path, kth_jacobian_dot_dq_function_name,'.h'), "wt");
+        fid = fopen(strcat(base_path, kth_jacobian_dot_dq_function_name,'.cpp'), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
         fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 1> ", kth_jacobian_dot_dq_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q, Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> dq){"));
         fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 1> J_dot_dq;"));
         fprintf(fid, "%s\n\n", strcat("J_dot_dq.setZero();"));
@@ -206,14 +283,342 @@ function export_kinematic_functions(model)
         end
         
         fprintf(fid, "%s\n\n", "return J_dot_dq;");
+        fprintf(fid, "%s\n", "}");
+
+    fclose(fid);
+    end
+
+    %% cpp.h direct kinematic
+    
+    for k = 1:model.n_dofs
+        if(k~=model.n_dofs)
+            kth_direct_kinematic_function_name = strcat(direct_kinematic_function_name,'_', num2str(k-1));
+        else
+            kth_direct_kinematic_function_name = direct_kinematic_function_name;
+        end
+  
+        fid = fopen(strcat(base_path, strcat(kth_direct_kinematic_function_name,'.h')), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 4, 4> ", kth_direct_kinematic_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q){"));
+        fprintf(fid, "%s\n\n", "Eigen::Matrix<double, 4, 4> T;");
+    
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double q",int2str(i-1)," = q(", int2str(i-1),",0);"));
+        end
+        fprintf(fid, "\n");
+        
+        kth_T = T{k};
+        for i = 1:size(kth_T,1)
+            for j=1:size(kth_T,2)
+                data_str = strcat("T(",num2str(i-1),",",num2str(j-1),") = ");
+                fprintf(fid, "%s\n\n", strcat(data_str, to_c(kth_T(i,j))));
+            end
+        end
+        
+        fprintf(fid, "%s\n\n", "return T;");
+        fprintf(fid, "%s\n", "}");
+    
+        fclose(fid);
+    
+    end
+    
+%% cpp.h jacobian
+
+    for k = 1:model.n_dofs
+        if(k~=model.n_dofs)
+            kth_jacobian_function_name = strcat(jacobian_function_name,'_', num2str(k-1));
+        else
+            kth_jacobian_function_name = jacobian_function_name;
+        end
+
+        fid = fopen(strcat(base_path, kth_jacobian_function_name,'.h'), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, ", num2str(model.n_dofs),"> ", kth_jacobian_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q){"));
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, ", num2str(model.n_dofs),"> J;"));
+        fprintf(fid, "%s\n\n", strcat("J.setZero();"));
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double q",int2str(i-1)," = q(", int2str(i-1),",0);"));
+        end
+        fprintf(fid, "\n");
+        
+        kth_J = J{k};
+        for i = 1:size(kth_J,1)
+            for j=1:size(kth_J,2)
+                data_str = strcat("J(",num2str(i-1),",",num2str(j-1),") = ");
+                fprintf(fid, "%s\n\n", strcat(data_str, to_c(kth_J(i,j))));
+            end
+        end
+        
+        fprintf(fid, "%s\n\n", "return J;");
+        fprintf(fid, "%s\n", "}");
+
+    fclose(fid);
+    end
+
+%% cpp.h jacobian dot
+
+    for k = 1:model.n_dofs
+        if(k~=model.n_dofs)
+            kth_jacobian_dot_function_name = strcat(jacobian_dot_function_name,'_', num2str(k-1));
+        else
+            kth_jacobian_dot_function_name = jacobian_dot_function_name;
+        end
+
+        fid = fopen(strcat(base_path, kth_jacobian_dot_function_name,'.h'), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 6> ", kth_jacobian_dot_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q, Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> dq){"));
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 6> J_dot;"));
+        fprintf(fid, "%s\n\n", strcat("J_dot.setZero();"));
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double q",int2str(i-1)," = q(", int2str(i-1),",0);"));
+        end
+        fprintf(fid, "\n");
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double dq",int2str(i-1)," = dq(", int2str(i-1),",0);"));
+        end
+        fprintf(fid, "\n");
+        
+        kth_J_dot = J_dot{k};
+        for i = 1:size(kth_J_dot,1)
+            for j=1:size(kth_J_dot,2)
+                data_str = strcat("J_dot(",num2str(i-1),",",num2str(j-1),") = ");
+                fprintf(fid, "%s\n\n", strcat(data_str, to_c(kth_J_dot(i,j))));
+            end
+        end
+        
+        fprintf(fid, "%s\n\n", "return J_dot;");
+        fprintf(fid, "%s\n", "}");
+
+    fclose(fid);
+    end
+
+%% cpp.h jacobian dot * dq
+
+    for k = 1:model.n_dofs
+        if(k~=model.n_dofs)
+            kth_jacobian_dot_dq_function_name = strcat(jacobian_dot_dq_function_name,'_', num2str(k-1));
+        else
+            kth_jacobian_dot_dq_function_name = jacobian_dot_dq_function_name;
+        end
+
+        fid = fopen(strcat(base_path, kth_jacobian_dot_dq_function_name,'.h'), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 1> ", kth_jacobian_dot_dq_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q, Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> dq){"));
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 1> J_dot_dq;"));
+        fprintf(fid, "%s\n\n", strcat("J_dot_dq.setZero();"));
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double q",int2str(i-1)," = q(", int2str(i-1),",0);"));
+        end
+        fprintf(fid, "\n");
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double dq",int2str(i-1)," = dq(", int2str(i-1),",0);"));
+        end
+        fprintf(fid, "\n");
+        
+        kth_J_dot_dq = J_dot_dq{k};
+        for i = 1:size(kth_J_dot_dq,1)
+            for j=1:size(kth_J_dot_dq,2)
+                data_str = strcat("J_dot_dq(",num2str(i-1),",",num2str(j-1),") = ");
+                fprintf(fid, "%s\n\n", strcat(data_str, to_c(kth_J_dot_dq(i,j))));
+            end
+        end
+        
+        fprintf(fid, "%s\n\n", "return J_dot_dq;");
+        fprintf(fid, "%s\n", "}");
+
+    fclose(fid);
+    end
+
+%% cpp - so lib direct kinematic
+    
+    for k = 1:model.n_dofs
+        if(k~=model.n_dofs)
+            kth_direct_kinematic_function_name = strcat(direct_kinematic_function_name,'_', num2str(k-1));
+        else
+            kth_direct_kinematic_function_name = direct_kinematic_function_name;
+        end
+  
+        fid = fopen(strcat(base_path, strcat(kth_direct_kinematic_function_name,'_so.cpp')), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
+        fprintf(fid, "%s\n", strcat("// Eigen::Matrix<double, 4, 4> ", kth_direct_kinematic_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q){"));
+        fprintf(fid, "%s\n\n", strcat("extern ""C"" void ", kth_direct_kinematic_function_name,"(double* result, double *q) {"));
+
+        fprintf(fid, "%s\n\n", "Eigen::Matrix<double, 4, 4> T;");
+    
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double q",int2str(i-1)," = q[", int2str(i-1),"];"));
+        end
+        fprintf(fid, "\n");
+        
+        kth_T = T{k};
+        for i = 1:size(kth_T,1)
+            for j=1:size(kth_T,2)
+                data_str = strcat("T(",num2str(i-1),",",num2str(j-1),") = ");
+                fprintf(fid, "%s\n\n", strcat(data_str, to_c(kth_T(i,j))));
+            end
+        end
+        
+        fprintf(fid, "%s\n\n", "// return T;");
+        fprintf(fid, "%s\n", "int index = 0;");
+        fprintf(fid, "%s\n", "for (int row = 0; row < T.rows(); ++row) {");
+        fprintf(fid, "\t%s\n", "for (int col = 0; col < T.cols(); ++col) {");
+        fprintf(fid, "\t\t%s\n", "result[index++] = T(row, col);");
+        fprintf(fid, "\t%s\n", "}");
         fprintf(fid, "%s\n\n", "}");
+
+        fprintf(fid, "%s\n", "}");
+    
+        fclose(fid);
+    
+    end
+    
+%% cpp - so lib jacobian
+
+    for k = 1:model.n_dofs
+        if(k~=model.n_dofs)
+            kth_jacobian_function_name = strcat(jacobian_function_name,'_', num2str(k-1));
+        else
+            kth_jacobian_function_name = jacobian_function_name;
+        end
+
+        fid = fopen(strcat(base_path, kth_jacobian_function_name,'_so.cpp'), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
+        fprintf(fid, "%s\n", strcat("// Eigen::Matrix<double, 6, ", num2str(model.n_dofs),"> ", kth_jacobian_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q){"));
+        fprintf(fid, "%s\n\n", strcat("extern ""C"" void ", kth_jacobian_function_name,"(double* result, double *q) {"));
+
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, ", num2str(model.n_dofs),"> J;"));
+        fprintf(fid, "%s\n\n", strcat("J.setZero();"));
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double q",int2str(i-1)," = q[", int2str(i-1),"];"));
+        end
+        fprintf(fid, "\n");
+        
+        kth_J = J{k};
+        for i = 1:size(kth_J,1)
+            for j=1:size(kth_J,2)
+                data_str = strcat("J(",num2str(i-1),",",num2str(j-1),") = ");
+                fprintf(fid, "%s\n\n", strcat(data_str, to_c(kth_J(i,j))));
+            end
+        end
+        
+        fprintf(fid, "%s\n\n", "// return J;");
+        fprintf(fid, "%s\n", "int index = 0;");
+        fprintf(fid, "%s\n", "for (int row = 0; row < J.rows(); ++row) {");
+        fprintf(fid, "\t%s\n", "for (int col = 0; col < J.cols(); ++col) {");
+        fprintf(fid, "\t\t%s\n", "result[index++] = J(row, col);");
+        fprintf(fid, "\t%s\n", "}");
+        fprintf(fid, "%s\n\n", "}");
+
+        fprintf(fid, "%s\n", "}");
+
+    fclose(fid);
+    end
+
+%% cpp - so lib jacobian dot
+
+    for k = 1:model.n_dofs
+        if(k~=model.n_dofs)
+            kth_jacobian_dot_function_name = strcat(jacobian_dot_function_name,'_', num2str(k-1));
+        else
+            kth_jacobian_dot_function_name = jacobian_dot_function_name;
+        end
+
+        fid = fopen(strcat(base_path, kth_jacobian_dot_function_name,'_so.cpp'), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
+        fprintf(fid, "%s\n", strcat("// Eigen::Matrix<double, 6, 6> ", kth_jacobian_dot_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q, Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> dq){"));
+        fprintf(fid, "%s\n\n", strcat("extern ""C"" void ", kth_jacobian_dot_function_name,"(double* result, double *q, double *dq) {"));
+
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 6> J_dot;"));
+        fprintf(fid, "%s\n\n", strcat("J_dot.setZero();"));
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double q",int2str(i-1)," = q[", int2str(i-1),"];"));
+        end
+        fprintf(fid, "\n");
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double dq",int2str(i-1)," = dq[", int2str(i-1),"];"));
+        end
+        fprintf(fid, "\n");
+        
+        kth_J_dot = J_dot{k};
+        for i = 1:size(kth_J_dot,1)
+            for j=1:size(kth_J_dot,2)
+                data_str = strcat("J_dot(",num2str(i-1),",",num2str(j-1),") = ");
+                fprintf(fid, "%s\n\n", strcat(data_str, to_c(kth_J_dot(i,j))));
+            end
+        end
+        
+        fprintf(fid, "%s\n\n", "// return J_dot;");
+        fprintf(fid, "%s\n", "int index = 0;");
+        fprintf(fid, "%s\n", "for (int row = 0; row < J_dot.rows(); ++row) {");
+        fprintf(fid, "\t%s\n", "for (int col = 0; col < J_dot.cols(); ++col) {");
+        fprintf(fid, "\t\t%s\n", "result[index++] = J_dot(row, col);");
+        fprintf(fid, "\t%s\n", "}");
+        fprintf(fid, "%s\n\n", "}");
+
+        fprintf(fid, "%s\n", "}");
+
+    fclose(fid);
+    end
+
+%% cpp - so lib jacobian dot * dq
+
+    for k = 1:model.n_dofs
+        if(k~=model.n_dofs)
+            kth_jacobian_dot_dq_function_name = strcat(jacobian_dot_dq_function_name,'_', num2str(k-1));
+        else
+            kth_jacobian_dot_dq_function_name = jacobian_dot_dq_function_name;
+        end
+
+        fid = fopen(strcat(base_path, kth_jacobian_dot_dq_function_name,'_so.cpp'), "wt");
+        fprintf(fid, "%s\n\n", strcat("#include <Eigen/Dense>"));
+        fprintf(fid, "%s\n", strcat("// Eigen::Matrix<double, 6, 1> ", kth_jacobian_dot_dq_function_name,"(Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> q, Eigen::Matrix<double, ", int2str(model.n_dofs), ", 1> dq){"));
+        fprintf(fid, "%s\n\n", strcat("extern ""C"" void ", kth_jacobian_dot_dq_function_name,"(double* result, double *q, double *dq) {"));
+
+        fprintf(fid, "%s\n\n", strcat("Eigen::Matrix<double, 6, 1> J_dot_dq;"));
+        fprintf(fid, "%s\n\n", strcat("J_dot_dq.setZero();"));
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double q",int2str(i-1)," = q[", int2str(i-1),"];"));
+        end
+        fprintf(fid, "\n");
+
+        for i=1:model.n_dofs
+            fprintf(fid, "%s\n", strcat("double dq",int2str(i-1)," = dq[", int2str(i-1),"];"));
+        end
+        fprintf(fid, "\n");
+        
+        kth_J_dot_dq = J_dot_dq{k};
+        for i = 1:size(kth_J_dot_dq,1)
+            for j=1:size(kth_J_dot_dq,2)
+                data_str = strcat("J_dot_dq(",num2str(i-1),",",num2str(j-1),") = ");
+                fprintf(fid, "%s\n\n", strcat(data_str, to_c(kth_J_dot_dq(i,j))));
+            end
+        end
+        
+        fprintf(fid, "%s\n\n", "// return J_dot_dq;");
+        fprintf(fid, "%s\n", "int index = 0;");
+        fprintf(fid, "%s\n", "for (int row = 0; row < J_dot_dq.rows(); ++row) {");
+        fprintf(fid, "\t%s\n", "for (int col = 0; col < J_dot_dq.cols(); ++col) {");
+        fprintf(fid, "\t\t%s\n", "result[index++] = J_dot_dq(row, col);");
+        fprintf(fid, "\t%s\n", "}");
+        fprintf(fid, "%s\n\n", "}");
+
+        fprintf(fid, "%s\n", "}");
 
     fclose(fid);
     end
 
 end
 
-function [J, dJ_dot_dq] = get_jacobians_from_direct_kinematics(T, N_DOFs)
+function [J, J_dot, dJ_dot_dq] = get_jacobians_from_direct_kinematics(T, N_DOFs)
     for i=1:N_DOFs
         T = subs(T,str2sym(strcat('q',num2str(i-1))),str2sym(strcat('q',num2str(i-1),'(t)')));
     end
@@ -263,6 +668,7 @@ function [J, dJ_dot_dq] = get_jacobians_from_direct_kinematics(T, N_DOFs)
         dJ = subs(dJ, str2sym(strcat('q',num2str(i-1),'(t)')), str2sym(strcat('q',num2str(i-1))));
     end
 
+    J_dot = dJ;
     dJ_dot_dq = dJ * dq;
 end
 
