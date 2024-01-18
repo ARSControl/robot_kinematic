@@ -650,6 +650,7 @@ function [J, J_dot, dJ_dot_dq] = get_jacobians_from_direct_kinematics(T, N_DOFs)
     Jo = equationsToMatrix([d_phi_ee, d_beta_ee, d_alpha_ee], vars);
 
     J = [Jp;Jo];
+    J = simplify(J);
 
     dq = [];
     for i=1:N_DOFs
@@ -668,8 +669,8 @@ function [J, J_dot, dJ_dot_dq] = get_jacobians_from_direct_kinematics(T, N_DOFs)
         dJ = subs(dJ, str2sym(strcat('q',num2str(i-1),'(t)')), str2sym(strcat('q',num2str(i-1))));
     end
 
-    J_dot = dJ;
-    dJ_dot_dq = dJ * dq;
+    J_dot = simplify(dJ);
+    dJ_dot_dq = simplify(J_dot * dq);
 end
 
 function [A, b] = compute_rcm_constraint(model)

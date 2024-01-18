@@ -56,7 +56,7 @@ for i=1:model.n_dofs
         end
     end
         
-    T_0{i} = T;
+    T_0{i} = simplify(T);
 end
 
 model.simulator = SerialLink(Links);
